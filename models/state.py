@@ -16,16 +16,14 @@ class State(BaseModel, Base):
         name (Column): A column representing the name of the state.
         cities (relationship): A one-to-many relationship with the City model.
     """
-
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
     cities = relationship("City", backref="state", cascade="delete")
 
-    if getenv("HBNB_TYPE_STORAGE") != "db":
-
+    if getenv("HBNB_TYPE_STORAGE") != 'db':
         @property
         def cities(self):
-            """get list of all related city obj"""
+            """ get list of all related city obj"""
             city_list = []
             for city in list(models.storage.all(City).values()):
                 if city.state_id == self.id:
